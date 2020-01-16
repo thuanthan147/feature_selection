@@ -29,16 +29,28 @@ class FeatureSelector:
         threhold (default 0.3). Return the list of column 
         to be removed.
         Args:
-            input_df: pandas.DataFrame
-                The data frame you want to examine
-        Result:
+            threshold: float
+                The threshold you want to filter
+        Return:
             list[str]: The list of columns' name to be removed 
         """
-        
         missing_counts = self.df.isnull().sum().tolist()
         missing_percentage = [count / self.num_records for count in missing_counts]
         missing_dict = dict(zip(self.columns, missing_percentage))
         columns_filtered = {key: value for (key, value) in missing_dict.items() 
         if value >= threshold}
         return list(columns_filtered.keys())
+
+    def single_unique_cols(self):
+        """
+        Remove column with only one value
+        Return:
+            list[str]: list of columns with single unique value
+        """
+        single_unique_cols = []
+        for col in self.columns:
+            unique_val = self.df[col].nunique()
+            if unique_val != 1 or unique_val == 0: 
+                single_unique_cols.append(col) 
+        return single_unique_cols
 
