@@ -54,3 +54,14 @@ class FeatureSelector:
                 single_unique_cols.append(col) 
         return single_unique_cols
 
+    def collinear_cols(self, threshold=0.97):
+        """
+        Return pairs of columns with collinearity above or equal to 
+        threshold (default 0.97)
+        Args:
+            threshold: float 
+        Return:
+            list[str]: list of tuple of columns with collinearity above the threshold 
+        """
+        corr_matrix = self.df.corr()
+
